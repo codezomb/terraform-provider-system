@@ -1,10 +1,12 @@
 package provider_test
 
 import (
+	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/neuspaces/terraform-provider-system/internal/acctest"
 	"github.com/neuspaces/terraform-provider-system/internal/acctest/tfbuild"
+	"github.com/neuspaces/terraform-provider-system/internal/client"
 	"path"
 	"regexp"
 	"sync/atomic"
@@ -106,23 +108,21 @@ func TestAccFolder_create_overwrite(t *testing.T) {
 			ProviderFactories: acctest.ProviderFactories(),
 			Steps: []resource.TestStep{
 				{
+					// The folder exists on the system and is not managed by any resource. A second resource on the
+					// same path would report drift and fail to destroy what the first has already removed.
+					PreConfig: func() {
+						err := client.NewFolderClient(target.Provider.System).Create(context.Background(), client.Folder{
+							Path: testRunFolderPath(target, testConfig.folderName),
+							Mode: 0755,
+							Uid:  -1,
+							Gid:  -1,
+						})
+						if err != nil {
+							t.Fatal(err)
+						}
+					},
 					Config: tfbuild.FileString(tfbuild.File(
 						acctest.ProviderConfigBlock(target.Configs.Default()),
-						testAccFolderBlock("existing", testRunFolderPath(target, testConfig.folderName),
-							tfbuild.AttributeString("mode", "755"),
-						),
-					)),
-					Check: resource.ComposeTestCheckFunc(
-						resource.TestCheckResourceAttr("system_folder.existing", "id", testRunFolderPath(target, testConfig.folderName)),
-						resource.TestCheckResourceAttr("system_folder.existing", "mode", "755"),
-					),
-				},
-				{
-					Config: tfbuild.FileString(tfbuild.File(
-						acctest.ProviderConfigBlock(target.Configs.Default()),
-						testAccFolderBlock("existing", testRunFolderPath(target, testConfig.folderName),
-							tfbuild.AttributeString("mode", "755"),
-						),
 						testAccFolderBlock("test", testRunFolderPath(target, testConfig.folderName),
 							tfbuild.AttributeString("mode", "700"),
 							tfbuild.AttributeBool("overwrite", true),

@@ -415,6 +415,9 @@ func resourceFileDelete(ctx context.Context, d *schema.ResourceData, meta interf
 func resourceFileImportState(ctx context.Context, d *schema.ResourceData, m interface{}) ([]*schema.ResourceData, error) {
 	rs := d.State()
 
+	// Attributes without a counterpart on the system need their default in the imported state
+	_ = d.Set(resourceFileAttrOverwrite, false)
+
 	importId := rs.ID
 	importIdParts := strings.Split(importId, ":")
 

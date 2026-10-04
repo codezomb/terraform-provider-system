@@ -101,6 +101,11 @@ func (c *folderClient) Create(ctx context.Context, f Folder) error {
 
 	createCmds = append(createCmds, &MkdirCommand{Path: pathSub, Mode: f.Mode})
 
+	if f.Overwrite && f.Mode&fs.ModePerm > 0 {
+		// `mkdir -p` succeeds on an existing folder without applying the mode
+		createCmds = append(createCmds, &ChmodCommand{Path: pathSub, Mode: f.Mode})
+	}
+
 	if f.Uid != -1 {
 		createCmds = append(createCmds, &ChownCommand{Path: pathSub, User: strconv.Itoa(f.Uid)})
 	} else if f.User != "" {

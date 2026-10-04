@@ -1,16 +1,19 @@
 package provider_test
 
 import (
+	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/neuspaces/terraform-provider-system/internal/acctest"
 	"github.com/neuspaces/terraform-provider-system/internal/acctest/tfbuild"
+	"github.com/neuspaces/terraform-provider-system/internal/client"
 	"github.com/neuspaces/terraform-provider-system/internal/lib/osrelease"
 	"github.com/neuspaces/terraform-provider-system/internal/provider"
 	"path"
 	"regexp"
 	"strconv"
+	"strings"
 	"sync/atomic"
 	"testing"
 )
@@ -664,26 +667,22 @@ func TestAccFile_create_overwrite(t *testing.T) {
 			ProviderFactories: acctest.ProviderFactories(),
 			Steps: []resource.TestStep{
 				{
+					// The file exists on the system and is not managed by any resource. A second resource on the
+					// same path would report drift and fail to destroy what the first has already removed.
+					PreConfig: func() {
+						err := client.NewFileClient(target.Provider.System).Create(context.Background(), client.File{
+							Path:    testRunFilePath(target, testConfig.fileName),
+							Mode:    0644,
+							Uid:     -1,
+							Gid:     -1,
+							Content: strings.NewReader("hello world!"),
+						})
+						if err != nil {
+							t.Fatal(err)
+						}
+					},
 					Config: tfbuild.FileString(tfbuild.File(
 						acctest.ProviderConfigBlock(target.Configs.Default()),
-						testAccFileBlock("existing", testRunFilePath(target, testConfig.fileName),
-							tfbuild.AttributeString("mode", "644"),
-							tfbuild.AttributeString("content", "hello world!"),
-						),
-					)),
-					Check: resource.ComposeTestCheckFunc(
-						resource.TestCheckResourceAttr("system_file.existing", "id", testRunFilePath(target, testConfig.fileName)),
-						resource.TestCheckResourceAttr("system_file.existing", "mode", "644"),
-						resource.TestCheckResourceAttr("system_file.existing", "content", "hello world!"),
-					),
-				},
-				{
-					Config: tfbuild.FileString(tfbuild.File(
-						acctest.ProviderConfigBlock(target.Configs.Default()),
-						testAccFileBlock("existing", testRunFilePath(target, testConfig.fileName),
-							tfbuild.AttributeString("mode", "644"),
-							tfbuild.AttributeString("content", "hello world!"),
-						),
 						testAccFileBlock("test", testRunFilePath(target, testConfig.fileName),
 							tfbuild.AttributeString("mode", "600"),
 							tfbuild.AttributeString("content", "overwritten content!"),

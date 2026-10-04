@@ -35,7 +35,7 @@ func resourceFolder() *schema.Resource {
 		DeleteContext: resourceFolderDelete,
 
 		Importer: &schema.ResourceImporter{
-			StateContext: schema.ImportStatePassthroughContext,
+			StateContext: resourceFolderImportState,
 		},
 
 		SchemaVersion: 1,
@@ -232,4 +232,11 @@ func resourceFolderDelete(ctx context.Context, d *schema.ResourceData, meta inte
 	}
 
 	return nil
+}
+
+func resourceFolderImportState(ctx context.Context, d *schema.ResourceData, m interface{}) ([]*schema.ResourceData, error) {
+	// Attributes without a counterpart on the system need their default in the imported state
+	_ = d.Set(resourceFolderAttrOverwrite, false)
+
+	return schema.ImportStatePassthroughContext(ctx, d, m)
 }
