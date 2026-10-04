@@ -12,6 +12,12 @@ Documentation: [registry.terraform.io](https://registry.terraform.io/providers/n
 
 Discuss: [github.com/discussions](https://github.com/neuspaces/terraform-provider-system/discussions)
 
+> **Fork.** This is `codezomb/terraform-provider-system`, a maintained fork of
+> [neuspaces/terraform-provider-system](https://github.com/neuspaces/terraform-provider-system) at v0.5.0.
+> It adds: `host_key` works with Ed25519 keys, an `overwrite` attribute on `system_file` and
+> `system_folder` to adopt existing paths, and Go 1.26 with current dependencies. The badges and registry links
+> below point at upstream; this fork is not published to a registry.
+
 The Terraform Provider for (Linux Operating) System allows managing files, directories, users, groups, packages, and services on remote servers on operating system level agent-less via SSH.
 
 > Even in a cloud-native heaven ☁️, there will still be use cases for pets 🐈
