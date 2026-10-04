@@ -15,17 +15,17 @@ jobs:
   build:
     name: Build
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
 
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v7.0.1
 
       -
         name: Set up Go
-        uses: actions/setup-go@v5.0.1
+        uses: actions/setup-go@v7.0.0
         with:
           go-version-file: go.mod
       
@@ -40,10 +40,11 @@ jobs:
           go mod download
 
       - 
-        name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3.1.1
+        name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v2.0.2
         with:
-          terraform_version: "1.6.3"
+          tofu_version: "1.13.1"
+          tofu_wrapper: false
 
       - 
         name: Verify generated files
@@ -62,10 +63,10 @@ jobs:
           go test -v ./...
   
   acctest:
-    name: Acceptance test (${{ matrix.target.name }})
+    name: Acceptance test (${{ matrix.target.name }}, tofu ${{ matrix.tofu_version }})
     
     needs: build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
 
     permissions:
@@ -93,19 +94,14 @@ jobs:
             host_port: 12022
             private_key_file: root-ed25519
             extra_run_args: --tmpfs /tmp --tmpfs /run --tmpfs /run/lock --mount type=bind,source=/sys/fs/cgroup,target=/sys/fs/cgroup --cgroupns=host
-        terraform_version:
-          # - '0.14.11'
-          # - '0.15.5'
-          # - '1.0.7'
-          # - '1.1.7'
-          # - '1.1.9'
-          # - '1.2.8'
-          - '1.6.3'
+        tofu_version:
+          - '1.12.6'
+          - '1.13.1'
     
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v7.0.1
       
       - 
         name: Context variables
@@ -116,7 +112,7 @@ jobs:
       
       -
         name: Set up Go
-        uses: actions/setup-go@v5.0.1
+        uses: actions/setup-go@v7.0.0
         with:
           go-version-file: go.mod
 
@@ -150,20 +146,22 @@ jobs:
           ${{ steps.vars.outputs.os_image_name }}
 
       - 
-        name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3.1.1
+        # The wrapper is disabled because the acceptance test framework runs the executable directly
+        name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v2.0.2
         with:
-          terraform_version: ${{ matrix.terraform_version }}
+          tofu_version: ${{ matrix.tofu_version }}
+          tofu_wrapper: false
 
       -
         name: Run acceptance tests
         env:
           TF_ACC: "1"
           TF_LOG: "DEBUG"
-          TF_ACC_TERRAFORM_PATH: ${{ steps.terraform_cli.outputs.path }}
+          TF_ACC_PROVIDER_HOST: registry.opentofu.org
           TF_ACC_PROVIDER_SYSTEM_TARGETS: ${{ matrix.target.name }}
         run: |
-          go test -v ./internal/provider/
+          TF_ACC_TERRAFORM_PATH="$(command -v tofu)" go test -v ./internal/provider/
 
       -
         name: Logs of ${{ matrix.target.name }} container
@@ -186,13 +184,13 @@ jobs:
     if: ${{ github.repository == 'neuspaces/terraform-provider-system' && github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}
 
     needs: acctest
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
 
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v7.0.1
 
       -
         name: Unshallow
@@ -200,7 +198,7 @@ jobs:
 
       -
         name: Set up Go
-        uses: actions/setup-go@v5.0.1
+        uses: actions/setup-go@v7.0.0
         with:
           go-version-file: go.mod
 
