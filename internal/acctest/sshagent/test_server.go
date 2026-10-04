@@ -48,9 +48,10 @@ func (s *TestServer) Use(t *testing.T, scopeFunc func(t *testing.T)) {
 
 	// Start serving
 	go func() {
-		err = s.server.Serve(ctx, listener)
+		err := s.server.Serve(ctx, listener)
 		if err != nil {
-			t.Fatal(err)
+			// t.Fatal must be called from the test goroutine
+			t.Error(err)
 		}
 	}()
 
