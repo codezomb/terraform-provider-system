@@ -1,6 +1,6 @@
 # Fedora
 # https://hub.docker.com/_/fedora
-ARG FEDORA_VERSION=40
+ARG FEDORA_VERSION=44
 FROM fedora:${FEDORA_VERSION}
 
 # Packages

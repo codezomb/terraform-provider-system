@@ -1,6 +1,6 @@
 # Debian
 # https://hub.docker.com/_/debian
-ARG DEBIAN_VERSION=bookworm-20240513-slim
+ARG DEBIAN_VERSION=trixie-20260918-slim
 FROM debian:${DEBIAN_VERSION}
 
 # Switch to noninteractive

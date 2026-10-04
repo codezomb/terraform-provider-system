@@ -31,7 +31,7 @@ func TestAccPackagesApk_create_single(t *testing.T) {
 					Config: tfbuild.FileString(tfbuild.File(
 						acctest.ProviderConfigBlock(target.Configs.Default()),
 						testAccPackageApkBlock("test",
-							// https://pkgs.alpinelinux.org/packages?name=openssl&branch=v3.15
+							// https://pkgs.alpinelinux.org/packages?name=openssl&branch=v3.24
 							tfbuild.InnerBlock("package",
 								tfbuild.AttributeString("name", "openssl"),
 							),
@@ -73,10 +73,10 @@ func TestAccPackagesApk_create_with_version(t *testing.T) {
 					Config: tfbuild.FileString(tfbuild.File(
 						acctest.ProviderConfigBlock(target.Configs.Default()),
 						testAccPackageApkBlock("test",
-							// https://pkgs.alpinelinux.org/packages?name=grep&branch=v3.15
+							// https://pkgs.alpinelinux.org/packages?name=grep&branch=v3.24
 							tfbuild.InnerBlock("package",
 								tfbuild.AttributeString("name", "grep"),
-								tfbuild.AttributeString("version", "=3.7-r0"),
+								tfbuild.AttributeString("version", "=3.12-r0"),
 							),
 						),
 					)),
@@ -84,7 +84,7 @@ func TestAccPackagesApk_create_with_version(t *testing.T) {
 						provider.TestLogResourceAttr(t, "system_packages_apk.test"),
 						resource.TestCheckResourceAttrSet("system_packages_apk.test", "id"),
 						resource.TestCheckResourceAttr("system_packages_apk.test", "package.#", "1"),
-						resource.TestCheckResourceAttr("system_packages_apk.test", "package.0.version", "=3.7-r0"),
+						resource.TestCheckResourceAttr("system_packages_apk.test", "package.0.version", "=3.12-r0"),
 						resource.TestCheckResourceAttrSet("system_packages_apk.test", "package.0.versions.0.installed"),
 						resource.TestCheckResourceAttrSet("system_packages_apk.test", "package.0.versions.0.available"),
 						provider.TestCheckResourceAttrBase64("system_packages_apk.test", "internal", `{"pre_installed":{"grep":false}}`),
@@ -116,7 +116,7 @@ func TestAccPackagesApk_create_single_idempotent(t *testing.T) {
 					Config: tfbuild.FileString(tfbuild.File(
 						acctest.ProviderConfigBlock(target.Configs.Default()),
 						testAccPackageApkBlock("test",
-							// https://pkgs.alpinelinux.org/packages?name=rsync&branch=v3.15
+							// https://pkgs.alpinelinux.org/packages?name=rsync&branch=v3.24
 							tfbuild.InnerBlock("package",
 								tfbuild.AttributeString("name", "rsync"),
 							),
@@ -162,11 +162,11 @@ func TestAccPackagesApk_multiple(t *testing.T) {
 					Config: provider.TestLogString(t, tfbuild.FileString(tfbuild.File(
 						acctest.ProviderConfigBlock(target.Configs.Default()),
 						testAccPackageApkBlock("test",
-							// https://pkgs.alpinelinux.org/packages?name=openssl&branch=v3.15
+							// https://pkgs.alpinelinux.org/packages?name=openssl&branch=v3.24
 							tfbuild.InnerBlock("package",
 								tfbuild.AttributeString("name", "openssl"),
 							),
-							// https://pkgs.alpinelinux.org/packages?name=rsync&branch=v3.15
+							// https://pkgs.alpinelinux.org/packages?name=rsync&branch=v3.24
 							tfbuild.InnerBlock("package",
 								tfbuild.AttributeString("name", "rsync"),
 							),
@@ -216,7 +216,7 @@ func TestAccPackagesApk_update_add_package(t *testing.T) {
 					Config: provider.TestLogString(t, tfbuild.FileString(tfbuild.File(
 						acctest.ProviderConfigBlock(target.Configs.Default()),
 						testAccPackageApkBlock("test",
-							// https://pkgs.alpinelinux.org/packages?name=openssl&branch=v3.15
+							// https://pkgs.alpinelinux.org/packages?name=openssl&branch=v3.24
 							tfbuild.InnerBlock("package",
 								tfbuild.AttributeString("name", "openssl"),
 							),
@@ -236,11 +236,11 @@ func TestAccPackagesApk_update_add_package(t *testing.T) {
 					Config: provider.TestLogString(t, tfbuild.FileString(tfbuild.File(
 						acctest.ProviderConfigBlock(target.Configs.Default()),
 						testAccPackageApkBlock("test",
-							// https://pkgs.alpinelinux.org/packages?name=openssl&branch=v3.15
+							// https://pkgs.alpinelinux.org/packages?name=openssl&branch=v3.24
 							tfbuild.InnerBlock("package",
 								tfbuild.AttributeString("name", "openssl"),
 							),
-							// https://pkgs.alpinelinux.org/packages?name=grep&branch=v3.15
+							// https://pkgs.alpinelinux.org/packages?name=grep&branch=v3.24
 							tfbuild.InnerBlock("package",
 								tfbuild.AttributeString("name", "grep"),
 							),
@@ -289,11 +289,11 @@ func TestAccPackagesApk_update_remove_package(t *testing.T) {
 					Config: provider.TestLogString(t, tfbuild.FileString(tfbuild.File(
 						acctest.ProviderConfigBlock(target.Configs.Default()),
 						testAccPackageApkBlock("test",
-							// https://pkgs.alpinelinux.org/packages?name=openssl&branch=v3.15
+							// https://pkgs.alpinelinux.org/packages?name=openssl&branch=v3.24
 							tfbuild.InnerBlock("package",
 								tfbuild.AttributeString("name", "openssl"),
 							),
-							// https://pkgs.alpinelinux.org/packages?name=grep&branch=v3.15
+							// https://pkgs.alpinelinux.org/packages?name=grep&branch=v3.24
 							tfbuild.InnerBlock("package",
 								tfbuild.AttributeString("name", "grep"),
 							),
@@ -316,7 +316,7 @@ func TestAccPackagesApk_update_remove_package(t *testing.T) {
 					Config: provider.TestLogString(t, tfbuild.FileString(tfbuild.File(
 						acctest.ProviderConfigBlock(target.Configs.Default()),
 						testAccPackageApkBlock("test",
-							// https://pkgs.alpinelinux.org/packages?name=openssl&branch=v3.15
+							// https://pkgs.alpinelinux.org/packages?name=openssl&branch=v3.24
 							tfbuild.InnerBlock("package",
 								tfbuild.AttributeString("name", "openssl"),
 							),
@@ -350,7 +350,7 @@ func TestAccPackagesApk_unavailable(t *testing.T) {
 					Config: tfbuild.FileString(tfbuild.File(
 						acctest.ProviderConfigBlock(target.Configs.Default()),
 						testAccPackageApkBlock("test",
-							// https://pkgs.alpinelinux.org/packages?name=openssl&branch=v3.15
+							// https://pkgs.alpinelinux.org/packages?name=openssl&branch=v3.24
 							tfbuild.InnerBlock("package",
 								tfbuild.AttributeString("name", "openssl"),
 							),

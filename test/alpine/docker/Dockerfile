@@ -1,12 +1,12 @@
 # Alpine Linux
 # https://hub.docker.com/_/alpine
-ARG ALPINE_VERSION=3.15.4
+ARG ALPINE_VERSION=3.24.2
 FROM alpine:${ALPINE_VERSION}
 
 # Packages
 RUN set -eux; \
     apk update; \
-    apk add --no-cache alpine-base busybox-extras syslog-ng bash su-exec sudo ca-certificates openssh rsync shadow rssh; \
+    apk add --no-cache alpine-base busybox-extras syslog-ng bash su-exec sudo ca-certificates openssh rsync shadow; \
     mkdir -p /usr/local/sbin;
 
 # OpenRC
@@ -27,8 +27,8 @@ COPY sshd-config/sshd-config.sh /usr/local/sbin/sshd-config
 COPY sshd-config/sshd-config.init /etc/init.d/sshd-config
 
 RUN set -eux; \
-    deluser $(getent passwd 33 | cut -d: -f1); \
-    delgroup $(getent group 33 | cut -d: -f1) 2>/dev/null || true; \
+    getent passwd 33 | cut -d: -f1 | xargs -r deluser; \
+    getent group 33 | cut -d: -f1 | xargs -r delgroup; \
     mkdir -p /root/.ssh /etc/authorized_keys; \
     chmod 700 /root/.ssh; \
     sed -i -e 's/#command_args=".*"/command_args="-e"/g' /etc/conf.d/sshd; \
