@@ -4,9 +4,12 @@ import "golang.org/x/crypto/ssh"
 
 func Password(password string) AuthMethod {
 	return func() ([]ssh.AuthMethod, error) {
+		// The error of the last attempted method is returned when the authentication fails.
+		// Keyboard interactive is attempted first because a server without a keyboard interactive device rejects
+		// the method with an error which hides the authentication failure.
 		return []ssh.AuthMethod{
-			ssh.Password(password),
 			ssh.KeyboardInteractive(sshPasswordKeyboardInteractive(password)),
+			ssh.Password(password),
 		}, nil
 	}
 }
