@@ -16,9 +16,9 @@ about: For when something is there, but doesn't work how it should.
 
 <!--- Thank you for keeping this note for the community --->
 
-### Terraform Version
+### OpenTofu Version
 
-<!--- Please run `terraform -v` to show the Terraform core version and provider version(s). If you are not running the latest version of Terraform or the provider, please upgrade because your issue may have already been fixed. [Terraform documentation on provider versioning](https://www.terraform.io/docs/configuration/providers.html#provider-versions). --->
+<!--- Please run `opentofu -v` to show the OpenTofu core version and provider version(s). If you are not running the latest version of OpenTofu or the provider, please upgrade because your issue may have already been fixed. [OpenTofu documentation on provider versioning](https://opentofu.org/docs/language/providers/configuration/#provider-versions). --->
 
 ### Affected Resource(s)
 
@@ -26,14 +26,14 @@ about: For when something is there, but doesn't work how it should.
 
 * system_XXXXX
 
-### Terraform Configuration Files
+### OpenTofu Configuration Files
 
 <!--- Information about code formatting: https://help.github.com/articles/basic-writing-and-formatting-syntax/#quoting-code --->
 
 ```tf
-# Copy-paste your Terraform configurations here.
+# Copy-paste your OpenTofu configurations here.
 #
-# For large Terraform configs, consider to share the config in a separate
+# For large OpenTofu configs, consider to share the config in a separate
 # GitHub repository and refer it here.
 #
 # If reproducing the bug involves modifying the config file (e.g., apply a config,
@@ -47,12 +47,12 @@ about: For when something is there, but doesn't work how it should.
 <!---
 Please provide a link to a GitHub Gist containing the complete debug output. Please do NOT paste the debug output in the issue; just paste a link to the Gist.
 
-To obtain the debug output, run `terraform apply` with the environment variable `TF_LOG=DEBUG`. See the [Terraform documentation on debugging](https://www.terraform.io/internals/debugging) for more information.
+To obtain the debug output, run `tofu apply` with the environment variable `TF_LOG=DEBUG`. See the [OpenTofu documentation on debugging](https://opentofu.org/docs/internals/debugging/) for more information.
 --->
 
 ### Panic Output
 
-<!--- If Terraform produced a panic, please provide a link to a GitHub Gist containing the output of the `crash.log`. --->
+<!--- If OpenTofu produced a panic, please provide a link to a GitHub Gist containing the output of the `crash.log`. --->
 
 ### Expected Behavior
 
@@ -66,7 +66,7 @@ To obtain the debug output, run `terraform apply` with the environment variable 
 
 <!--- Please list the steps required to reproduce the issue. --->
 
-1. `terraform apply`
+1. `tofu apply`
 
 ### Additional Context
 

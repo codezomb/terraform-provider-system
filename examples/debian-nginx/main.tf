@@ -49,7 +49,7 @@ resource "system_file" "index_html" {
         <title>Welcome to ${var.virtual_host_name}!</title>
     </head>
     <body>
-        <h1>You have successfully configured nginx using the terraform provider system!</h1>
+        <h1>You have successfully configured nginx using the opentofu provider system!</h1>
     </body>
 </html>
 EOT

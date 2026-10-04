@@ -16,7 +16,7 @@ description: |-
 
 ### Minimal
 
-```terraform
+```hcl
 resource "system_group" "fileshare" {
   name = "fileshare"
 }
@@ -24,7 +24,7 @@ resource "system_group" "fileshare" {
 
 ### Explicit gid
 
-```terraform
+```hcl
 resource "system_group" "fileshare" {
   name = "fileshare"
   gid  = 1001
@@ -33,7 +33,7 @@ resource "system_group" "fileshare" {
 
 ### System group
 
-```terraform
+```hcl
 resource "system_group" "nginx" {
   name   = "nginx"
   system = true
@@ -42,7 +42,7 @@ resource "system_group" "nginx" {
 
 ### System group with explicit gid
 
-```terraform
+```hcl
 resource "system_group" "nginx" {
   name   = "nginx"
   gid    = 201

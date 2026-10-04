@@ -12,7 +12,7 @@ const (
 	EnvTfProviderSystemConfigPath = EnvPrefix + "CONFIG_PATH"
 )
 
-// Environment variables defined by the Terraform acceptance test framework
+// Environment variables defined by the OpenTofu acceptance test framework
 // https://www.terraform.io/plugin/sdkv2/testing/acceptance-tests#environment-variables
 const (
 	// EnvTfAcc refers to the TF_ACC environment variable

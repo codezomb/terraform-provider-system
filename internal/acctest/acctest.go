@@ -106,7 +106,7 @@ func Initialize(m *testing.M) error {
 		}
 	}()
 
-	// Run test with terraform provider sdk
+	// Run test with opentofu provider sdk
 	resource.TestMain(m)
 
 	return nil

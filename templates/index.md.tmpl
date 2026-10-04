@@ -1,5 +1,4 @@
 ---
-layout: ""
 page_title: "Provider: (Operating) System"
 description: |-
   The (Operating) System Provider allows managing files, directories, packages, and services on remote servers on operating system level agent-less via SSH.
@@ -14,14 +13,14 @@ Use the (Operating) System Provider to manage files, directories, packages, and 
 - Manage files, directories, users, groups, packages, and services on remote systems
 - Connect to and authenticate with remote servers via SSH
 - No agent on remote system required
-- Seamless integration with Terraform providers of all major IaaS cloud providers
+- Seamless integration with OpenTofu providers of all major IaaS cloud providers
 - Support for Debian, Alpine, and Fedora Linux confirmed via acceptance test suite
 
 ## Usage example
 
 The following example connects to a remote Debian system, installs the nginx web server, and subsequently enables and starts the nginx service.
 
-```terraform
+```hcl
 provider "system" {
   ssh {
     host        = "10.12.13.14"
@@ -76,11 +75,11 @@ Refer to the page on [SSH authentication](./docs/guides/ssh-auth) for details an
 
 -> Prefer the recommended configuration as described in previous sections on [SSH connection](#ssh-connection) and [SSH authentication](#ssh-authentication) over the SSH provisioner like configuration. The SSH provisioner like configuration does not support all features.
 
-You may reuse your existing [Terraform SSH provisioner configuration](https://www.terraform.io/language/resources/provisioners/connection) to configure the connection to the remote system.
+You may reuse your existing [OpenTofu SSH provisioner configuration](https://opentofu.org/docs/language/resources/provisioners/connection/) to configure the connection to the remote system.
 
-The [connection block of the Terraform SSH provisioner](https://www.terraform.io/language/resources/provisioners/connection#connection-block) is mostly compatible to the [`connection` block](#nestedblock--connection) of the provider.
+The [connection block of the OpenTofu SSH provisioner](https://opentofu.org/docs/language/resources/provisioners/connection/#connection-block) is mostly compatible to the [`connection` block](#nestedblock--connection) of the provider.
 
-```terraform
+```hcl
 provider "system" {
   connection {
     host        = "192.168.32.4"

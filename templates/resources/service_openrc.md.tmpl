@@ -18,7 +18,7 @@ description: |-
 
 This example ensures that the OpenRC service `nginx` is started. The service must exist.
 
-```terraform
+```hcl
 resource "system_service_openrc" "nginx" {
   name    = "nginx"
   status  = "started"
@@ -29,7 +29,7 @@ resource "system_service_openrc" "nginx" {
 
 This example ensures that the OpenRC service `nginx` is enabled. The service is enabled for the runlevel defined in the attribute `runlevel` which defaults to `default`. The service must exist.
 
-```terraform
+```hcl
 resource "system_service_openrc" "nginx" {
   name    = "nginx"
   enabled = true
@@ -40,7 +40,7 @@ resource "system_service_openrc" "nginx" {
 
 This example creates an OpenRC service script `busybox-httpd` using the `system_file` resource and subsequently enables and starts the service using the `system_service_openrc`. The service starts a busybox httpd daemon.
 
-```terraform
+```hcl
 resource "system_file" "busybox_httpd" {
   path    = "/etc/init.d/busybox-httpd"
   mode    = 755
@@ -79,7 +79,7 @@ This section describes general notes for using the `system_service_openrc` resou
 - The resource does not manage, create, or delete the service script.
 - The resource remembers the `enabled` state and the `status` state at the time the resource is created. This state is referred to as the *original state*.
 - When the resource is deleted, the service is reverted to the original state.
-- Avoid defining multiple `system_service_openrc` resources, which manage the same service in the same Terraform configuration. Instead, merge all attributes in a single `system_service_openrc` resource.
+- Avoid defining multiple `system_service_openrc` resources, which manage the same service in the same OpenTofu configuration. Instead, merge all attributes in a single `system_service_openrc` resource.
 
 {{ if .HasExample -}}
 ## Example Usage

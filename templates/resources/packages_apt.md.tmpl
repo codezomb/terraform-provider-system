@@ -22,7 +22,7 @@ Use the `system_packages_apt` resource to manage packages on Debian systems.
 
 This example ensures that the apt package `nginx` is installed.
 
-```terraform
+```hcl
 resource "system_packages_apt" "single" {
   package {
     name = "nginx"
@@ -34,7 +34,7 @@ resource "system_packages_apt" "single" {
 
 This example ensures that the apt packages `nginx` and `openssl` are installed.
 
-```terraform
+```hcl
 resource "system_packages_apt" "multiple" {
   package {
     name = "nginx"
@@ -52,7 +52,7 @@ This section describes general notes for using the `system_packages_apt` resourc
 
 - The resource the remembers whether packages are installed at the time the resource is created.
 - When the resource is deleted, only packages which have been installed by the resource will be removed.
-- Avoid defining multiple `system_packages_apt` resources in the same Terraform configuration. Instead, manage all required packages in a single `system_packages_apt` resource.
+- Avoid defining multiple `system_packages_apt` resources in the same OpenTofu configuration. Instead, manage all required packages in a single `system_packages_apt` resource.
 
 {{ if .HasExample -}}
 ## Example Usage

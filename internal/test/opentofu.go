@@ -2,7 +2,7 @@ package test
 
 import "strings"
 
-// ConcatTestConfig concats one or more Terraform configurations
+// ConcatTestConfig concats one or more OpenTofu configurations
 func ConcatTestConfig(configs ...string) string {
 	var trimmedConfigs []string
 	for _, c := range configs {

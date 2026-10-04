@@ -16,7 +16,7 @@ description: |-
 
 ### Relative target
 
-```terraform
+```hcl
 resource "system_link" "relative_target" {
   path   = "/root/link.txt"
   target = "./document.txt"
@@ -25,7 +25,7 @@ resource "system_link" "relative_target" {
 
 ### Absolute target
 
-```terraform
+```hcl
 resource "system_link" "absolute_target" {
   path   = "/root/link.txt"
   target = "/root/document.txt"

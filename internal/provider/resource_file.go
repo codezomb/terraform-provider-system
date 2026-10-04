@@ -110,7 +110,7 @@ func resourceFile() *schema.Resource {
 				ConflictsWith: []string{resourceFileAttrGroup},
 			},
 			resourceFileAttrContent: {
-				Description: fmt.Sprintf("Content of the file. Only recommended for small text-based payloads such as configuration files etc. The content will be stored in plain-text in the terraform state. Mutually exclusive with attributes `%[2]s` and `%[3]s`.", resourceFileAttrContent, resourceFileAttrContentSensitive, resourceFileAttrSource),
+				Description: fmt.Sprintf("Content of the file. Only recommended for small text-based payloads such as configuration files etc. The content will be stored in plain-text in the opentofu state. Mutually exclusive with attributes `%[2]s` and `%[3]s`.", resourceFileAttrContent, resourceFileAttrContentSensitive, resourceFileAttrSource),
 				Type:        schema.TypeString,
 				Optional:    true,
 				Sensitive:   false,
@@ -120,7 +120,7 @@ func resourceFile() *schema.Resource {
 				},
 			},
 			resourceFileAttrContentSensitive: {
-				Description: fmt.Sprintf("Content of the file similar to `%[1]s` attribute but with enabled sensitive flag. Prefer `%[2]s` to `%[1]s` to avoid leak of the content in the terraform log output. Mutually exclusive with attributes `%[1]s` and `%[3]s`.", resourceFileAttrContent, resourceFileAttrContentSensitive, resourceFileAttrSource),
+				Description: fmt.Sprintf("Content of the file similar to `%[1]s` attribute but with enabled sensitive flag. Prefer `%[2]s` to `%[1]s` to avoid leak of the content in the opentofu log output. Mutually exclusive with attributes `%[1]s` and `%[3]s`.", resourceFileAttrContent, resourceFileAttrContentSensitive, resourceFileAttrSource),
 				Type:        schema.TypeString,
 				Optional:    true,
 				Sensitive:   true,

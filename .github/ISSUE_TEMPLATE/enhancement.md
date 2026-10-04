@@ -25,7 +25,7 @@ about: For when something (a resource, field, etc.) is missing, and should be ad
 
 * system_XXXXX
 
-### Potential Terraform Configuration
+### Potential OpenTofu Configuration
 
 <!--- Information about code formatting: https://help.github.com/articles/basic-writing-and-formatting-syntax/#quoting-code --->
 

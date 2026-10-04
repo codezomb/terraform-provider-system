@@ -1,6 +1,6 @@
 # Debian Linux test container
 
-This container image runs Debian Linux as a target for the acceptance tests of the Terraform provider system.
+This container image runs Debian Linux as a target for the acceptance tests of the OpenTofu provider system.
 
 ## Notes
 

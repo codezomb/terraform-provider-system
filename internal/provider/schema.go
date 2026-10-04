@@ -48,8 +48,8 @@ func expandProviderSchema(d *schema.ResourceData) (*Schema, error) {
 	} else if connectionV, connectionOk := d.GetOk(SchemaAttrConnection); connectionOk {
 		// Compatible configuration using `connection` block
 		// Users may configure the provider using `connection` block which equals the
-		// `connection` block in a Terraform provisioner configuration
-		// https://www.terraform.io/language/resources/provisioners/connection
+		// `connection` block in a OpenTofu provisioner configuration
+		// https://opentofu.org/docs/language/resources/provisioners/connection/
 		schemaSsh, bastionSchemaSsh, err := expandSchemaConnection(connectionV)
 		if err != nil {
 			return nil, err

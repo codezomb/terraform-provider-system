@@ -18,7 +18,7 @@ description: |-
 
 ### Minimal
 
-```terraform
+```hcl
 resource "system_folder" "minimal" {
   path = "/root/some-folder"
 }
@@ -28,7 +28,7 @@ resource "system_folder" "minimal" {
 
 Folder permissions can be explicitly defined in the `mode` attribute in octal format.
 
-```terraform
+```hcl
 resource "system_folder" "permissions" {
   path = "/root/some-folder"
   mode = 700
@@ -39,7 +39,7 @@ resource "system_folder" "permissions" {
 
 The user and group owning the folder can be configured explicitly in attributes `user` and `group`. The user or group is referenced by their canonical name. The `system_folder` resource expects that the user or group exists on the remote server.
 
-```terraform
+```hcl
 resource "system_folder" "ownership_name" {
   path  = "/root/some-folder"
   user  = "johndoe"
@@ -51,7 +51,7 @@ resource "system_folder" "ownership_name" {
 
 The user and group owning the folder can be configured explicitly in attributes `uid` and `gid`. The user or group is referenced by their id. In contrast to explicit ownership by name, the user or group must not exist on the remote server.
 
-```terraform
+```hcl
 resource "system_folder" "ownership_id" {
   path = "/root/some-folder"
   uid  = 1001
@@ -61,7 +61,7 @@ resource "system_folder" "ownership_id" {
 
 You may consider managing the owning user with a `system_user` resource or the owning group with a `system_group` resource, and use the outputs of these resources to define the `uid` and `gid` attribute.
 
-```terraform
+```hcl
 resource "system_group" "johndoe" {
   name = "johndoe"
 }
@@ -82,7 +82,7 @@ resource "system_folder" "ownership_id" {
 
 By default, `system_folder` fails to create the resource if a folder already exists at `path`. Set `overwrite` to `true` to instead adopt the existing folder, overwriting its permissions and ownership to match this resource's configuration.
 
-```terraform
+```hcl
 resource "system_folder" "overwrite" {
   path      = "/root/some-folder"
   mode      = 700

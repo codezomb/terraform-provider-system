@@ -11,13 +11,13 @@ The provider supports the SSH authentication methods which are documented on thi
 
 The provider attributes presented in the examples below are expected to be combined with provider attributes to configure the [SSH connection](./ssh-connect). 
 
-!> Hard-coded credentials are not recommended in any Terraform configuration and risks secret leakage should this file ever be committed to a public version control system.
+!> Hard-coded credentials are not recommended in any OpenTofu configuration and risks secret leakage should this file ever be committed to a public version control system.
 
 ## Authentication methods
 
 ### Agent
 
-```terraform
+```hcl
 provider "system" {
   ssh {
     user  = "root"
@@ -28,7 +28,7 @@ provider "system" {
 
 ### Password
 
-```terraform
+```hcl
 provider "system" {
   ssh {
     user     = "root"
@@ -39,7 +39,7 @@ provider "system" {
 
 ### Private key
 
-```terraform
+```hcl
 provider "system" {
   ssh {
     user        = "root"
@@ -54,7 +54,7 @@ The provider supports privilege escalation on the remote system via sudo. Enable
 
 If provider attribute `sudo` is `true`, commands are executed on the remote system using `sudo`. As a prerequisite sudo must be installed and configured on the remote system. The user must be able to run sudo without password prompt (NOPASSWD).
 
-```terraform
+```hcl
 provider "system" {
   ssh {
     user        = "user"

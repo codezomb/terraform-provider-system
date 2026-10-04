@@ -15,7 +15,7 @@ The provider attributes presented in the examples below are expected to be combi
 
 To connect directly to the remote system, define the connection arguments in the [`ssh` block](..#nestedblock--ssh).
 
-```terraform
+```hcl
 provider "system" {
   ssh {
     host = "10.12.13.14"
@@ -28,7 +28,7 @@ provider "system" {
 
 To connect indirectly to the remote system via a proxy or bastion host, define the connection arguments to the proxy in the [`ssh` block](..#nestedblock--ssh) within the [`proxy` block](..#nestedblock--proxy). Define the connection arguments to the remote system from the perspective of the proxy host in the [`ssh` block](..#nestedblock--ssh).
 
-```terraform
+```hcl
 provider "system" {
   proxy {
     ssh {

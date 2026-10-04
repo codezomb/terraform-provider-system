@@ -49,12 +49,12 @@ func dataCommand() *schema.Resource {
 				Computed:    true,
 			},
 			dataCommandAttrStdout: {
-				Description: fmt.Sprintf("Base64 encoded stdout from the command. Captured stdout is limited to a maximum size of %d bytes by default to prevent unindented growth of the terraform state. If necessary, adjust the limit using the attribute `%s`. If the stdout exceeds this limit, the data source fails.", dataCommandStdoutLimitDefault, attrPath{dataCommandAttrExpect, dataCommandAttrExpectStdoutLimit}.String()),
+				Description: fmt.Sprintf("Base64 encoded stdout from the command. Captured stdout is limited to a maximum size of %d bytes by default to prevent unindented growth of the opentofu state. If necessary, adjust the limit using the attribute `%s`. If the stdout exceeds this limit, the data source fails.", dataCommandStdoutLimitDefault, attrPath{dataCommandAttrExpect, dataCommandAttrExpectStdoutLimit}.String()),
 				Type:        schema.TypeString,
 				Computed:    true,
 			},
 			dataCommandAttrStderr: {
-				Description: fmt.Sprintf("Base64 encoded stderr from the command. Captured stdout is limited to a maximum size of %d bytes by default to prevent unindented growth of the terraform state. If necessary, adjust the limit using the attribute `%s`. If the stdout exceeds this limit, the data source fails.", dataCommandStdoutLimitDefault, attrPath{dataCommandAttrExpect, dataCommandAttrExpectStderrLimit}.String()),
+				Description: fmt.Sprintf("Base64 encoded stderr from the command. Captured stdout is limited to a maximum size of %d bytes by default to prevent unindented growth of the opentofu state. If necessary, adjust the limit using the attribute `%s`. If the stdout exceeds this limit, the data source fails.", dataCommandStdoutLimitDefault, attrPath{dataCommandAttrExpect, dataCommandAttrExpectStderrLimit}.String()),
 				Type:        schema.TypeString,
 				Computed:    true,
 			},
@@ -81,7 +81,7 @@ func dataCommand() *schema.Resource {
 							},
 						},
 						dataCommandAttrExpectStdoutLimit: {
-							Description:  fmt.Sprintf("Maximum bytes read from stdout of the command. Define a reasonable limit to prevent unindented growth of the terraform state. Defaults to `%d`.", dataCommandStdoutLimitDefault),
+							Description:  fmt.Sprintf("Maximum bytes read from stdout of the command. Define a reasonable limit to prevent unindented growth of the opentofu state. Defaults to `%d`.", dataCommandStdoutLimitDefault),
 							Type:         schema.TypeInt,
 							Optional:     true,
 							ValidateFunc: validation.IntAtLeast(0),
@@ -98,7 +98,7 @@ func dataCommand() *schema.Resource {
 							},
 						},
 						dataCommandAttrExpectStderrLimit: {
-							Description:  fmt.Sprintf("Maximum bytes read from stderr of the command. Define a reasonable limit to prevent unindented growth of the terraform state. Defaults to `%d`.", dataCommandStderrLimitDefault),
+							Description:  fmt.Sprintf("Maximum bytes read from stderr of the command. Define a reasonable limit to prevent unindented growth of the opentofu state. Defaults to `%d`.", dataCommandStderrLimitDefault),
 							Type:         schema.TypeInt,
 							Optional:     true,
 							ValidateFunc: validation.IntAtLeast(0),
@@ -215,7 +215,7 @@ func dataCommandRead(ctx context.Context, d *schema.ResourceData, meta interface
 		}
 	}
 
-	// Terraform requires an id: Use the hex encoded sha1 sum of a string concat of all attributes
+	// OpenTofu requires an id: Use the hex encoded sha1 sum of a string concat of all attributes
 	id, err := dataIdFromAttrValues(commandString, result.ExitCode, result.StdoutString(), result.StderrString())
 	if err != nil {
 		return diag.FromErr(err)

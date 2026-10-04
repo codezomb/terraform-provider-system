@@ -29,7 +29,7 @@ You may use this provider to manage operating system related resources:
 - on servers which frequently change but cannot be destroyed and recreated easily, or
 - to prepare images of virtual machines as part of an immutable infrastructure approach
 
-You may also use this provider as a replacement for the [Terraform built-in ssh provisioner](https://www.terraform.io/language/resources/provisioners/connection) as far as the available resources of this provider cover your use case.
+You may also use this provider as a replacement for the [OpenTofu built-in ssh provisioner](https://opentofu.org/docs/language/resources/provisioners/connection/) as far as the available resources of this provider cover your use case.
 
 Specific examples for use cases are:
 - Individual on-premises servers or virtual machines

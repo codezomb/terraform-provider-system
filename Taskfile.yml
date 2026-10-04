@@ -3,7 +3,7 @@ version: "3"
 vars:
   TF_PROVIDER_NAME: system
 
-  ACCTEST_TF_CLI_VERSION: 1.6.3
+  ACCTEST_TOFU_CLI_VERSION: 1.13.1
 
   BIN_PATH: ./.bin
 
@@ -44,33 +44,33 @@ tasks:
       - echo "Open documentation at http://127.0.0.1:10080/pkg/github.com/neuspaces/terraform-provider-system"
       - godoc -http "127.0.0.1:10080" -index -goroot .
 
-  tf-fmt:
-    desc: Format Terraform code
+  tofu-fmt:
+    desc: Format OpenTofu code
     cmds:
-      - terraform fmt -recursive examples/
+      - tofu fmt -recursive examples/
 
   tf-provider-lint:
-    desc: Lint of Terraform provider implementation
+    desc: Lint of OpenTofu provider implementation
     cmds:
       - go run github.com/bflad/tfproviderlint/cmd/tfproviderlint -R001=false ./...
   
-  tf-cli-fetch:
-    desc: Download Terraform CLI executable used by acceptance tests
+  tofu-cli-fetch:
+    desc: Download OpenTofu CLI executable used by acceptance tests
     cmds:
-      - mkdir -p {{.BIN_PATH}}/terraform-{{.ACCTEST_TF_CLI_VERSION}}
-      - curl -s -L 'https://releases.hashicorp.com/terraform/{{.ACCTEST_TF_CLI_VERSION}}/terraform_{{.ACCTEST_TF_CLI_VERSION}}_{{OS}}_{{ARCH}}.zip' | funzip > '{{.BIN_PATH}}/terraform-{{.ACCTEST_TF_CLI_VERSION}}/terraform'
-      - chmod 755 '{{.BIN_PATH}}/terraform-{{.ACCTEST_TF_CLI_VERSION}}/terraform'
+      - mkdir -p {{.BIN_PATH}}/tofu-{{.ACCTEST_TOFU_CLI_VERSION}}
+      - curl -s -L 'https://github.com/opentofu/opentofu/releases/download/v{{.ACCTEST_TOFU_CLI_VERSION}}/tofu_{{.ACCTEST_TOFU_CLI_VERSION}}_{{OS}}_{{ARCH}}.tar.gz' | tar -xz -C '{{.BIN_PATH}}/tofu-{{.ACCTEST_TOFU_CLI_VERSION}}' tofu
+      - chmod 755 '{{.BIN_PATH}}/tofu-{{.ACCTEST_TOFU_CLI_VERSION}}/tofu'
     status:
-      - test -f '{{.BIN_PATH}}/terraform-{{.ACCTEST_TF_CLI_VERSION}}/terraform'
+      - test -f '{{.BIN_PATH}}/tofu-{{.ACCTEST_TOFU_CLI_VERSION}}/tofu'
 
-  tf-cli-link:
-    desc: Enable the version of the Terraform CLI executable
+  tofu-cli-link:
+    desc: Enable the version of the OpenTofu CLI executable
     deps:
-      - tf-cli-fetch
+      - tofu-cli-fetch
     cmds:
-      - ln -sf 'terraform-{{.ACCTEST_TF_CLI_VERSION}}/terraform' '{{.BIN_PATH}}/terraform'
+      - ln -sf 'tofu-{{.ACCTEST_TOFU_CLI_VERSION}}/tofu' '{{.BIN_PATH}}/tofu'
     status:
-      - test "terraform-{{.ACCTEST_TF_CLI_VERSION}}/terraform" = "$(readlink {{.BIN_PATH}}/terraform)"
+      - test "tofu-{{.ACCTEST_TOFU_CLI_VERSION}}/tofu" = "$(readlink {{.BIN_PATH}}/tofu)"
 
   build:
     desc: Build provider executable
@@ -86,8 +86,13 @@ tasks:
 
   testacc:
     desc: Run provider acceptance tests
+    deps:
+      - tofu-cli-link
     env:
       TF_ACC: true
+      # The acceptance test framework runs the OpenTofu CLI and resolves the provider in the OpenTofu registry
+      TF_ACC_TERRAFORM_PATH: '{{.ROOT_DIR}}/{{.BIN_PATH}}/tofu'
+      TF_ACC_PROVIDER_HOST: registry.opentofu.org
     cmds:
       - go test -run '^TestAcc' github.com/neuspaces/terraform-provider-system/internal/provider
 
@@ -99,9 +104,9 @@ tasks:
   docs-validate:
     desc: Validate provider documentation using tfplugindocs
     cmds:
-      - go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs validate
+      - sh ./tools/tfplugindocs.sh validate
 
   docs-generate:
     desc: Generate provider documentation using tfplugindocs
     cmds:
-      - go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate
+      - sh ./tools/tfplugindocs.sh generate

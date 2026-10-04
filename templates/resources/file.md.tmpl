@@ -22,14 +22,14 @@ This example ensures a file exists at the path `/root/hello-world.txt` with the 
 
 Consider the `content` attribute for relatively small, text-based file content. For large binary file content, use the `source` attribute.
 
-```terraform
+```hcl
 resource "system_file" "static_content" {
   path    = "/root/hello-world.txt"
   content = "Hello world!"
 }
 ```
 
-```terraform
+```hcl
 resource "system_file" "static_content_multiline" {
   path    = "/root/hello-world.txt"
   content = trimspace(<<EOT
@@ -43,7 +43,7 @@ EOT
 
 This example ensures a file exists at the path `/root/hello-world.txt` with the content provided in the `content_sensitive` attribute. The attribute `content_sensitive` is marked as sensitive in contrast to `content` which implies that its value is redacted from the output of plan, apply, or destroy commands. Note, that like `content`, the value of  `content_sensitive` is stored in the state in plaintext.
 
-```terraform
+```hcl
 resource "system_file" "sensitive_content" {
   path              = "/root/some-secret.txt"
   content_sensitive = "S3c3et!"
@@ -54,7 +54,7 @@ resource "system_file" "sensitive_content" {
 
 File permissions can be explicitly defined in the `mode` attribute in octal format.
 
-```terraform
+```hcl
 resource "system_file" "permissions" {
   path    = "/root/hello-world.txt"
   content = "Hello world!"
@@ -66,7 +66,7 @@ resource "system_file" "permissions" {
 
 The user and group owning the file can be configured explicitly in attributes `user` and `group`. The user or group is referenced by their canonical name. The `system_file` resource expects that the user or group exists on the remote server.
 
-```terraform
+```hcl
 resource "system_file" "ownership_name" {
   path = "/root/hello-world.txt"
   content = "Hello world!"
@@ -79,7 +79,7 @@ resource "system_file" "ownership_name" {
 
 The user and group owning the file can be configured explicitly in attributes `uid` and `gid`. The user or group is referenced by their id. In contrast to explicit ownership by name, the user or group must not exist on the remote server.
 
-```terraform
+```hcl
 resource "system_file" "ownership_id" {
   path    = "/root/hello-world.txt"
   content = "Hello world!"
@@ -90,7 +90,7 @@ resource "system_file" "ownership_id" {
 
 You may consider managing the owning user with a `system_user` resource or the owning group with a `system_group` resource, and use the outputs of these resources to define the `uid` and `gid` attribute.
 
-```terraform
+```hcl
 resource "system_group" "johndoe" {
   name = "johndoe"
 }
@@ -112,7 +112,7 @@ resource "system_file" "ownership_id" {
 
 By default, `system_file` fails to create the resource if a file already exists at `path`. Set `overwrite` to `true` to instead adopt the existing file, overwriting its content, permissions and ownership to match this resource's configuration.
 
-```terraform
+```hcl
 resource "system_file" "overwrite" {
   path      = "/root/hello-world.txt"
   content   = "Hello world!"
@@ -127,9 +127,9 @@ If the existing entry at `path` is not a regular file (e.g. a directory), the re
 
 This example ensures a file exists on the remote at the path `/root/upload.zip` with the content from a file on the local client. The `source` attribute provides the path to the file on the client.
 
-When using `source` instead of `content` or `content_sensitive`, the file content is *not stored* in the Terraform state.
+When using `source` instead of `content` or `content_sensitive`, the file content is *not stored* in the OpenTofu state.
 
-```terraform
+```hcl
 resource "system_file" "upload" {
   path   = "/root/upload.zip"
   source = "./upload.zip"
@@ -144,10 +144,10 @@ The connection to the HTTP server of the source URL is established from the clie
 
 Changes of the file on the remote server are detected and will cause the file to be downloaded from the source URL again. Changes of the content of the source URL are detected via changes in the ETag returned in the http response. If an ETag is not returned by the web server, changes will not be detected.
 
-```terraform
+```hcl
 resource "system_file" "https_source" {
-  path   = "/root/terraform_1.2.8_SHA256SUMS"
-  source = "https://releases.hashicorp.com/terraform/1.2.8/terraform_1.2.8_SHA256SUMS"
+  path   = "/root/tofu_1.12.6_SHA256SUMS"
+  source = "https://github.com/opentofu/opentofu/releases/download/v1.12.6/tofu_1.12.6_SHA256SUMS"
 }
 ```
 
@@ -172,7 +172,7 @@ This section describes general notes for using the `system_file` resource.
 Use the following syntax to import a `system_file` resource. The command requires the absolute path to the file on the remote.
 
 ```shell
-terraform import system_file.test /path/to/file
+tofu import system_file.test /path/to/file
 ```
 
 This import will not read the content of the remote file.
@@ -184,7 +184,7 @@ This import will not read the content of the remote file.
 Use the following syntax to import a `system_file` resource with a `content` attribute. Append the suffix `:content` to the absolute path to the file on the remote.
 
 ```shell
-terraform import system_file.test /path/to/file:content
+tofu import system_file.test /path/to/file:content
 ```
 
 ### Import with `content_sensitive` attribute
@@ -192,5 +192,5 @@ terraform import system_file.test /path/to/file:content
 Use the following syntax to import a `system_file` resource with a `content_sensitive` attribute. Append the suffix `:content_sensitive` to the absolute path to the file on the remote.
 
 ```shell
-terraform import system_file.test /path/to/file:content_sensitive
+tofu import system_file.test /path/to/file:content_sensitive
 ```

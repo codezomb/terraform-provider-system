@@ -59,7 +59,7 @@ func dataReleaseRead(ctx context.Context, d *schema.ResourceData, meta interface
 		return diag.FromErr(err)
 	}
 
-	// Terraform requires an id: Use the hex encoded sha1 sum of a string concat of all attributes
+	// OpenTofu requires an id: Use the hex encoded sha1 sum of a string concat of all attributes
 	id, err := dataIdFromAttrValues(osInfo.Name, osInfo.Vendor, osInfo.Version, osInfo.Release)
 	if err != nil {
 		return diag.FromErr(err)

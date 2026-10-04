@@ -7,7 +7,7 @@ description: |-
 
 # Supported systems
 
-The current version of the Terraform provider supports the following Linux distributions. Support for each distribution is verified by a comprehensive acceptance test suite.
+The current version of the OpenTofu provider supports the following Linux distributions. Support for each distribution is verified by a comprehensive acceptance test suite.
 
 - Alpine Linux 3
 - Debian 11 (bullseye)

@@ -12,7 +12,7 @@ func Current() AccTest {
 	return current
 }
 
-// CurrentProviderConfigBlock returns the current configuration as a Terraform provider block
+// CurrentProviderConfigBlock returns the current configuration as a OpenTofu provider block
 // Deprecated
 func CurrentProviderConfigBlock() tfbuild.FileElement {
 	return tfbuild.Provider(provider.Name)
