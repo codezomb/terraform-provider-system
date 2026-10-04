@@ -207,6 +207,7 @@ func sshConnectOptsFromSshSchema(s SchemaSsh) []sshclient.ConnectOption {
 	// Host key
 	if s.HostKey != "" {
 		sshConnectOpts = append(sshConnectOpts, sshclient.HostKey(sshclient.StaticHostKey(s.HostKey)))
+		sshConnectOpts = append(sshConnectOpts, sshclient.StaticHostKeyAlgorithms(s.HostKey))
 	} else {
 		sshConnectOpts = append(sshConnectOpts, sshclient.HostKeyCallback(ssh.InsecureIgnoreHostKey()))
 	}
